@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"net"
+	"os"
 )
 
 type Client struct {
@@ -34,29 +36,54 @@ func NewClient(serverIp string, serverPort int) *Client {
 	return client
 }
 
-func (client *Client) menu() bool {
-	var flag int
+// 处理 server 回应的消息，直接显示到标准输出即可
+func (client *Client) DealResponse() {
+	// 一旦 client.conn 有数据，就直接 copy 到 stdout 上，永久阻塞监听
+	io.Copy(os.Stdout, client.conn)
 
+	/*
+	// 上面的 io 相当于下面这个 for
+	for {
+		buf := make([]byte, 100)
+		client.conn.Read(buf)
+		fmt.Println(buf)
+	}
+	*/
+}
+
+func (client *Client) menu() bool {
 	fmt.Println("1. 公聊模式")
 	fmt.Println("2. 私聊模式")
 	fmt.Println("3. 更新用户名")
 	fmt.Println("0. 退出")
 
+	var flag int
 	fmt.Scanln(&flag)
-
 	if 0 <= flag && flag <= 3 {
 		client.flag = flag
 		return true
 	} else {
-		fmt.Println(">>> 请输入合法范围内的数字 <<<")
 		return false
 	}
+}
+
+func (client *Client) UpdateName() bool {
+	fmt.Println(">>> 请输入用户名：")
+	fmt.Scanln(&client.Name)
+
+	sendMsg := "rename|" + client.Name + "\n"
+	_, err := client.conn.Write([]byte(sendMsg))
+	if err != nil {
+		fmt.Println("conn.Write err:", err)
+		return false
+	}
+	return true
 }
 
 func (client *Client) Run() {
 	for client.flag != 0 {
 		for client.menu() == false {
-			//
+			fmt.Println(">>> 请输入合法范围内的数字 <<<")
 		}
 
 		// 根据不同的模式处理不同的业务
@@ -69,11 +96,7 @@ func (client *Client) Run() {
 			fmt.Println("私聊模式...")
 		case 3:
 			// 更新用户名
-			fmt.Println("更新用户名")
-		case 0:
-			// 退出
-		default:
-			fmt.Println("default")
+			client.UpdateName()
 		}
 	}
 }
@@ -96,6 +119,10 @@ func main() {
 		fmt.Println(">>> 连接服务器失败...")
 		return
 	}
+
+	// 单独开启一个 goroutine 去处理 server 的回执消息
+	go client.DealResponse()
+
 	fmt.Println(">>> 连接服务器成功.")
 
 	// 启动客户端的业务
