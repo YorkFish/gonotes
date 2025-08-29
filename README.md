@@ -28,7 +28,28 @@ Usage of ./client:
 ## Gin Demo
 
 - v1.0
-	- `go mod init demo`
-	- `go get github.com/gin-gonic/gin`
-	- GET, POST
+
+```
+$ go mod init demo
+
+$ go get github.com/gin-gonic/gin
+
+GET  {host}/ping
+POST {host}/ping/{id}
+```
+
+- v2.0
+
+```
+├── main.go
+├── pojo
+│   └── User.go
+├── service
+│   └── UserService.go
+└── src
+    └── UserRouter.go
+
+add model User
+add group router
+```
 
