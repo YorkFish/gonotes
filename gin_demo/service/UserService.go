@@ -3,7 +3,6 @@ package service
 import (
 	"log"
 	"net/http"
-	"strconv"
 
 	"demo/pojo"
 
@@ -38,41 +37,33 @@ func PostUser(c *gin.Context) {
 		return
 	}
 
-	userList = append(userList, user)
-	c.JSON(http.StatusOK, "Successfully posted")
+	newUser := pojo.CreateUser(user)
+	c.JSON(http.StatusOK, newUser)
 }
 
 // Delete User
 func DeleteUser(c *gin.Context) {
-	userId, _ := strconv.Atoi(c.Param("id"))
-	for i, user := range userList {
-		log.Println(user)
-		if user.Id == userId {
-			userList = append(userList[:i], userList[i+1:]...)
-			c.JSON(http.StatusOK, "Successfully deleted")
-			return
-		}
+	userDeleted := pojo.DeleteUser(c.Param("id"))
+	if !userDeleted {
+		c.JSON(http.StatusNotFound, "Error")
+		return
 	}
-
-	c.JSON(http.StatusNotFound, "Error")
+	c.JSON(http.StatusOK, "Successfully")
 }
 
 // Put User
 func PutUser(c *gin.Context) {
-	beforeUser := pojo.User{}
-	err := c.BindJSON(&beforeUser)
+	user := pojo.User{}
+	err := c.BindJSON(&user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "Error")
+		return
 	}
 
-	userId, _ := strconv.Atoi(c.Param("id"))
-	for i, user := range userList {
-		if user.Id == userId {
-			userList[i] = beforeUser
-			c.JSON(http.StatusOK, "Successfully updated")
-			return
-		}
+	user = pojo.UpdateUser(c.Param("id"), user)
+	if user.Id == 0 {
+		c.JSON(http.StatusNotFound, "Error")
+		return
 	}
-
-	c.JSON(http.StatusNotFound, "Error")
+	c.JSON(http.StatusOK, user)
 }

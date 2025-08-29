@@ -80,7 +80,16 @@ insert into users (id, name, password, email) values
 ```
 
 ```
-get all
-get one
+GET
+    get all
+    get one
+```
+
+- v5.0
+
+```
+POST
+PUT
+DELETE
 ```
 
