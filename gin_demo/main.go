@@ -1,6 +1,7 @@
 package main
 
 import (
+	"demo/database"
 	. "demo/src"
 
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,10 @@ func main() {
 
 	v1 := router.Group("/v1")
 	AddUserRouter(v1)
+
+	go func() {
+		database.ConnMysql()
+	}()
 
 	router.Run(":8000")
 }

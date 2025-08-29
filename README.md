@@ -60,3 +60,27 @@ DELETE {host}/v1/user/{id}
 PUT    {host}/v1/user/{id}
 ```
 
+- v4.0
+
+```
+create database `gintest`;
+
+create table users (
+    id int,
+    name varchar(45),
+    password varchar(45),
+    email varchar(45),
+    primary key(id)
+);
+
+insert into users (id, name, password, email) values
+(1, 'york', '123456', 'example@gmail.com'),
+(2, 'fish', '123456', 'example@gmail.com'),
+(3, 'jessy', '123456', 'example@gmail.com');
+```
+
+```
+get all
+get one
+```
+
