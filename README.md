@@ -27,3 +27,8 @@ Usage of ./client:
 
 ## Gin Demo
 
+- v1.0
+	- `go mod init demo`
+	- `go get github.com/gin-gonic/gin`
+	- GET, POST
+
