@@ -53,3 +53,10 @@ add model User
 add group router
 ```
 
+- v3.0
+
+```
+DELETE {host}/v1/user/{id}
+PUT    {host}/v1/user/{id}
+```
+
