@@ -2,3 +2,4 @@ godemo
 main
 server
 client
+gin_demo/gin.log
