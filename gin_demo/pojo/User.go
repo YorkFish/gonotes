@@ -6,10 +6,15 @@ import (
 )
 
 type User struct {
-	Id       int    `json:"UserId"`   // UserId => user_id
-	Name     string `json:"UserName"` // Name => name, UserName => user_name
-	Password string `json:"UserPassword"`
-	Email    string `json:"UserEmail"`
+	Id       int    `json:"UserId" binding:"required"` // UserId => user_id
+	Name     string `json:"UserName" binding:"gt=5"`   // Name => name, UserName => user_name
+	Password string `json:"UserPassword" binding:"min=4,max=20,userpasd"`
+	Email    string `json:"UserEmail" binding:"email"`
+}
+
+type Users struct {
+	UserList     []User `json:"UserList" bingding:"required,gt=0,lt=3"`
+	UserListSize int    `json:"UserListSize"`
 }
 
 // Get

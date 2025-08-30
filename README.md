@@ -93,3 +93,23 @@ PUT
 DELETE
 ```
 
+- v6.0
+
+```
+log
+
+middleware
+
+basic auth
+router.Use(gin.BasicAuth(gin.Accounts{"Tom": "123456"}), middlewares.Logger())
+```
+
+- v7.0
+
+```
+Recovery
+validator
+
+go get github.com/go-playground/validator/v10
+```
+
