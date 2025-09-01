@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	db "demo/database"
 	"demo/middlewares"
 	"demo/pojo"
 
@@ -11,6 +12,9 @@ import (
 )
 
 var userList = []pojo.User{}
+
+/// ===
+// MySql
 
 // Get User
 func FindAllUsers(c *gin.Context) {
@@ -117,4 +121,26 @@ func CheckUserSession(c *gin.Context) {
 		"message": "Check Session Successfully",
 		"User":    sessionId,
 	})
+}
+
+/// ===
+// Redis
+
+// redis one user
+func RedisOneUser(c *gin.Context) {
+	id := c.Param("id")
+	if id == "0" {
+		c.JSON(http.StatusNotFound, "Error")
+		return
+	}
+	user := pojo.User{}
+	db.DBConnect.Find(&user, id)
+	c.Set("dbResult", user)
+}
+
+// redis all user
+func RedisAllUser(c *gin.Context) {
+	users := []pojo.User{}
+	db.DBConnect.Find(&users)
+	c.Set("dbUserAll", users)
 }

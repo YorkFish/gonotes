@@ -123,3 +123,10 @@ go get github.com/gin-contrib/sessions
 go get github.com/gin-contrib/sessions/cookie
 ```
 
+- v9.0
+
+```
+go get github.com/gomodule/redigo/redis
+go get github.com/pqueryna/ffjson/ffjson
+```
+
