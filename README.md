@@ -113,3 +113,13 @@ validator
 go get github.com/go-playground/validator/v10
 ```
 
+- v8.0
+
+```
+middleware
+session
+
+go get github.com/gin-contrib/sessions
+go get github.com/gin-contrib/sessions/cookie
+```
+

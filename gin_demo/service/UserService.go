@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"demo/middlewares"
 	"demo/pojo"
 
 	"github.com/gin-gonic/gin"
@@ -68,7 +69,7 @@ func PutUser(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// CreateUserList
+// Create Userlist
 func CreateUserList(c *gin.Context) {
 	users := pojo.Users{}
 	err := c.BindJSON(&users)
@@ -77,4 +78,43 @@ func CreateUserList(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, users)
+}
+
+// Login User
+func LoginUser(c *gin.Context) {
+	name := c.PostForm("name")
+	password := c.PostForm("password")
+	user := pojo.CheckUserPassword(name, password)
+	if user.Id == 0 {
+		c.JSON(http.StatusNotFound, "Error")
+		return
+	}
+
+	middlewares.SaveSession(c, user.Id)
+	c.JSON(http.StatusOK, gin.H{
+		"message":  "Login Successfully",
+		"User":     user,
+		"Sessions": middlewares.GetSession(c),
+	})
+}
+
+// Logout User
+func LogoutUser(c *gin.Context) {
+	middlewares.ClearSession(c)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Logout Successfully",
+	})
+}
+
+// check user session
+func CheckUserSession(c *gin.Context) {
+	sessionId := middlewares.GetSession(c)
+	if sessionId == 0 {
+		c.JSON(http.StatusUnauthorized, "Error")
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Check Session Successfully",
+		"User":    sessionId,
+	})
 }

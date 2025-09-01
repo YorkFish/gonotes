@@ -41,11 +41,18 @@ func DeleteUser(userId string) bool {
 	user := User{}
 	result := db.DBConnect.Where("id = ?", userId).Delete(&user)
 	log.Println(result)
-	return result.RowsAffected != 0
+	return result.RowsAffected > 0
 }
 
 // Update
 func UpdateUser(userId string, user User) User {
 	db.DBConnect.Model(&user).Where("id = ?", userId).Updates(user)
+	return user
+}
+
+// Check
+func CheckUserPassword(name string, password string) User {
+	user := User{}
+	db.DBConnect.Where("name = ? and password = ?", name, password).First(&user)
 	return user
 }
