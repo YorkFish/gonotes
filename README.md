@@ -133,6 +133,33 @@ go get github.com/pquerna/ffjson/ffjson
 - v10.0
 
 ```
+# 已废弃
 go get gopkg.in/mgo.v2
+
+# 官方驱动仍然 ok（但貌似没有 mgo 好用）
+go.mongodb.org/mongo-driver/mongo
+```
+
+- v11.0
+
+```
+go get github.com/qiniu/qmgo
+```
+
+## qmgo demo
+
+- connect MongoDB
+
+```
+go get github.com/qiniu/qmgo
+go get gopkg.in/mgo.v2/bson
+
+insert one
+insert multi
+
+find one
+fine all
+
+aggregation
 ```
 
