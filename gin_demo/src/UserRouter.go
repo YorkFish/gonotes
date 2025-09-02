@@ -30,4 +30,12 @@ func AddUserRouter(r *gin.RouterGroup) {
 	// Redis
 	user.GET("/", service.CatchUserAllDecorator(service.RedisAllUser, "user_all", pojo.User{}))
 	user.GET("/:id", service.CatchOneUserDecorator(service.RedisOneUser, "id", "user_%s", pojo.User{}))
+
+	// MongoDB
+	mgo := user.Group("/mongo")
+	mgo.POST("/", service.MongoDBCreateOneUser)
+	mgo.GET("/", service.MongoDBFindAllUser)
+	mgo.GET("/:id", service.MongoDBFindOneUser)
+	mgo.PUT("/:id", service.MongoDBUpdateUser)
+	mgo.DELETE("/:id", service.MongoDBDeleteUser)
 }

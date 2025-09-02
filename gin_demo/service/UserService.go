@@ -13,7 +13,7 @@ import (
 
 var userList = []pojo.User{}
 
-/// ===
+// ===
 // MySql
 
 // Get User
@@ -123,7 +123,7 @@ func CheckUserSession(c *gin.Context) {
 	})
 }
 
-/// ===
+// ===
 // Redis
 
 // redis one user
@@ -143,4 +143,76 @@ func RedisAllUser(c *gin.Context) {
 	users := []pojo.User{}
 	db.DBConnect.Find(&users)
 	c.Set("dbUserAll", users)
+}
+
+// ===
+// MongoDB
+
+// MongoDB create user
+func MongoDBCreateOneUser(c *gin.Context) {
+	user := pojo.User{}
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusNotAcceptable, "Error: "+err.Error())
+		return
+	}
+
+	newUser := pojo.MgoCreateUser(user)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Create User Successfully",
+		"User":    newUser,
+	})
+}
+
+// MongoDB findall user
+func MongoDBFindAllUser(c *gin.Context) {
+	users := pojo.MgoFindAllUser()
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Find All User Successfully",
+		"User":    users,
+	})
+}
+
+// MongoDB find user by id
+func MongoDBFindOneUser(c *gin.Context) {
+	user := pojo.MgoFindById(c.Param("id"))
+	if user.Id == 0 {
+		c.JSON(http.StatusNotFound, "Error")
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Find User Successfully",
+		"User":    user,
+	})
+}
+
+// MongoDB put user
+func MongoDBUpdateUser(c *gin.Context) {
+	user := pojo.User{}
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusNotAcceptable, "Error: "+err.Error())
+		return
+	}
+
+	user = pojo.MgoPutUser(c.Param("id"), user)
+	if user.Id == 0 {
+		c.JSON(http.StatusNotFound, "Error")
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Update User Successfully",
+		"User":    user,
+	})
+}
+
+// MongoDB delete user
+func MongoDBDeleteUser(c *gin.Context) {
+	user := pojo.MgoDeleteUser(c.Param("id"))
+	if !user {
+		c.JSON(http.StatusNotFound, "Error")
+		return
+	}
+	c.JSON(http.StatusOK, "Successfully")
 }

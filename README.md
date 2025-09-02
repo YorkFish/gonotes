@@ -127,6 +127,12 @@ go get github.com/gin-contrib/sessions/cookie
 
 ```
 go get github.com/gomodule/redigo/redis
-go get github.com/pqueryna/ffjson/ffjson
+go get github.com/pquerna/ffjson/ffjson
+```
+
+- v10.0
+
+```
+go get gopkg.in/mgo.v2
 ```
 
