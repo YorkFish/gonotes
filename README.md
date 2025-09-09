@@ -177,9 +177,30 @@ aggregation
 
 - crud
 
-### shop_sys demo
+### shop demo
 
 - router
 - middleware
 - upload
+
+### login demo
+
+- 项目结构
+- 传参
+
+```
+project/
+├── main.go          # 程序入口
+├── go.mod
+├── statics/         # 静态文件
+│   └── images/
+├── templates/       # 模板文件
+│   └── index.html
+├── handlers/        # 处理函数
+│   └── xx_handler.go
+├── models/          # 数据模型
+│   └── xx.go
+└── routes/          # 路由定义
+    └── routes.go
+```
 
