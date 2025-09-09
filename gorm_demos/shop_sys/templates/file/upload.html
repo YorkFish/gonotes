@@ -1,0 +1,24 @@
+{{define "file/upload.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>upload file</title>
+</head>
+<body>
+    <p>文件上传</p>
+
+    <!-- enctype="multipart/form-data" 传文件 -->
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <div>
+            <input type="file" name="filename">
+        </div>
+        <br>
+        <div>
+            <input type="submit">
+        </div>
+    </form>
+</body>
+</html>
+{{end}}

@@ -177,3 +177,9 @@ aggregation
 
 - crud
 
+### shop_sys demo
+
+- router
+- middleware
+- upload
+
