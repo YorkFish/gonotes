@@ -171,3 +171,9 @@ aggregation
 - mysql
 - vue
 
+## GORM demos
+
+### bookmanage demo
+
+- crud
+
